@@ -26,7 +26,7 @@
     @stack ('css')
 
 </head>
-
+@auth
 <body id="page-top">
 
     <!-- Page Wrapper -->
@@ -108,5 +108,5 @@
 
 @stack ('js')
 </body>
-
+@endauth
 </html>

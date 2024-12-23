@@ -1,21 +1,23 @@
 <?php
 
 use App\Http\Controllers\EquipoMedicoController;
+use App\Http\Controllers\homeController;
+use App\Http\Controllers\loginController;
+use App\Http\Controllers\logoutController;
 use App\Http\Controllers\MedicamentoController;
 use App\Http\Controllers\ProveedoreController;
 use App\Http\Controllers\SucursalController;
 use App\Http\Controllers\VentaController;
 use Illuminate\Support\Facades\Route;
-
 Route::get('/', function () {
-    return view('panel.index');
-});
-Route::view('/panel', 'panel.index')->name('panel');
+    return view('auth.login');
+})->name('index');
 
-Route::get('/login', function () {
-    return view('auth.login'); 
-});
-Route::view('/login', 'auth.login')->name('login');
+Route::get('/panel',[homeController::class,'index'])->name('panel');
+
+Route::get('/login', [loginController::class,'index'])->name('login');
+Route::post('/login', [loginController::class,'login']);
+Route::get('/logout',[logoutController::class,'logout'])->name('logout');
 
 Route::get('/medicamento', function () {
     return view('medicamento.index'); 

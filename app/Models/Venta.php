@@ -10,24 +10,27 @@ use Illuminate\Database\Eloquent\Model;
 class Venta extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'user_id',
         'sucursal_id',
         'total',
     ];
 
-
-    public function user(): BelongsTo
+    // Relación con usuarios
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function sucursal(): BelongsTo
+    // Relación con sucursales
+    public function sucursal()
     {
         return $this->belongsTo(Sucursal::class);
     }
 
-    public function detalles(): HasMany
+    // Relación con detalle de ventas
+    public function detalleVentas()
     {
         return $this->hasMany(DetalleVenta::class);
     }
