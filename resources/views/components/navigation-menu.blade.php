@@ -48,8 +48,8 @@
         </a>
         <div id="collapseUsuariosRoles" class="collapse" aria-labelledby="headingUsuariosRoles" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href=""><i class="fas fa-users mr-2"></i>Gestionar Usuarios</a>
-                <a class="collapse-item" href=""><i class="fas fa-user-shield mr-2"></i>Roles y Permisos</a>
+                <a class="collapse-item" href="{{ route('users.index') }}"><i class="fas fa-users mr-2"></i>Gestionar Usuarios</a>
+                <a class="collapse-item" href="{{ route('roles.index') }}"><i class="fas fa-user-shield mr-2"></i>Roles y Permisos</a>
             </div>
         </div>
     </li>

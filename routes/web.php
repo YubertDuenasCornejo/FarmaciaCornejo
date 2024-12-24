@@ -7,12 +7,14 @@ use App\Http\Controllers\logoutController;
 use App\Http\Controllers\MedicamentoController;
 use App\Http\Controllers\ProveedoreController;
 use App\Http\Controllers\SucursalController;
+use App\Http\Controllers\userController;
 use App\Http\Controllers\VentaController;
+use App\Http\Controllers\roleController;
 use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('auth.login');
 })->name('index');
-
+Route::resource('roles',roleController::class);
 Route::get('/panel',[homeController::class,'index'])->name('panel');
 
 Route::get('/login', [loginController::class,'index'])->name('login');
@@ -27,7 +29,7 @@ Route::view('/medicamento', 'medicamento.index')->name('medicamento');
 
 Route::view('/equipoMedico', 'equipoMedico.index')->name('equipoMedico');
 
-
+Route::resource('users',userController::class);
 
 Route::resource('medicamentos', MedicamentoController::class);
 Route::resource('equipoMedico', EquipoMedicoController::class);
