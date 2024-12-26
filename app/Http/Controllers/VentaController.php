@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Venta;
 use App\Models\Sucursal;
 use App\Models\User;
+use App\Models\Cliente;
 use App\Models\Medicamento;
 use App\Models\EquipoMedico;
 use Illuminate\Http\Request;
@@ -28,11 +29,12 @@ class VentaController extends Controller
     public function create()
     {
         $usuarios = User::all();
+        $clientes = Cliente::all();
         $sucursales = Sucursal::all();
         $medicamentos = Medicamento::all();
         $equipos = EquipoMedico::all();
     
-        return view('ventas.create', compact('usuarios', 'sucursales', 'medicamentos', 'equipos'));
+        return view('ventas.create', compact('usuarios', 'sucursales', 'medicamentos', 'equipos', 'clientes'));
     }
     
 
@@ -43,6 +45,7 @@ class VentaController extends Controller
 {
     $request->validate([
         'user_id' => 'required|exists:users,id',
+        'cliente_id' => 'required|exists:clientes,id',
         'sucursal_id' => 'required|exists:sucursals,id',
         'total' => 'required|numeric|min:0',
         'productos' => 'required|array|min:1',
@@ -54,6 +57,7 @@ class VentaController extends Controller
     // Crear la venta
     $venta = Venta::create([
         'user_id' => $request->user_id,
+        'cliente_id' => $request->cliente_id,
         'sucursal_id' => $request->sucursal_id,
         'total' => $request->total,
     ]);

@@ -27,6 +27,15 @@
                 @endforeach
             </select>
         </div>
+        <div class="mb-3">
+            <label for="cliente_id" class="form-label">Cliente</label>
+            <select name="cliente_id" id="cliente_id" class="form-control" required>
+                <option value="">Seleccione un usuario</option>
+                @foreach ($clientes as $cliente)
+                    <option value="{{ $cliente->id }}">{{ $cliente->nombre }}</option>
+                @endforeach
+            </select>
+        </div>
 
         <!-- Selección de la Sucursal -->
         <div class="mb-3">
@@ -86,6 +95,39 @@
         <button type="submit" class="btn btn-success">Guardar Venta</button>
     </form>
 </div>
+<!--modal para agregar produtos-->
+<div class="modal fade" id="createModal-{{ $libro->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Añadir Copia</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('copia_libros.store') }}" method="POST">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="codigo" class="form-label">Código:</label>
+                            <!-- Campo de código deshabilitado inicialmente -->
+                            <input type="text" name="codigo" id="codigo" class="form-control" readonly>
+                            @error('codigo')
+                                <small class="text-danger">{{ '*' . $message }}</small>
+                            @enderror
+                        </div>
+                        <div class="mb-3 form-check">
+                            <!-- Checkbox para habilitar el campo de código personalizado -->
+                            <input type="checkbox" class="form-check-input" id="customCode" name="customCode">
+                            <label class="form-check-label" for="customCode">Ingresar código personalizado</label>
+                        </div>
+                        <input type="hidden" name="libro_id" value="{{ $libro->id }}">
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
 <script>
     // Script para añadir y eliminar productos dinámicamente
