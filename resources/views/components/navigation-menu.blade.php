@@ -87,7 +87,23 @@
             </div>
         </div>
     </li>
+    <!-- Divider -->
+    <hr class="sidebar-divider">
 
+    <!-- Ventas Section -->
+    <div class="sidebar-heading">Clientes</div>
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseClientes" aria-expanded="true" aria-controls="collapseUsuariosRoles">
+            <i class="fas fa-users-cog"></i>
+            <span>Clientes</span>
+        </a>
+        <div id="collapseClientes" class="collapse" aria-labelledby="headingClientes" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="{{ route('clientes.index') }}"><i class="fas fa-users mr-2"></i>Gestionar Clientes</a>
+                
+            </div>
+        </div>
+    </li>
     <!-- Divider -->
     <hr class="sidebar-divider">
 

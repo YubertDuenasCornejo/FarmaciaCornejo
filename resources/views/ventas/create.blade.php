@@ -61,7 +61,7 @@
                         </select>
                     </div>
                     <div class="col-md-2">
-                        <label for="cantidad_1" class="form-label">Cantidad</label>
+                        <label for="cantidad_1" class="form-label">Cantidad a vender</label>
                         <input type="number" name="productos[0][cantidad]" id="cantidad_1" class="form-control" min="1" required>
                     </div>
                     <div class="col-md-3">
