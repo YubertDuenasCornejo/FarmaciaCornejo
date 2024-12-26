@@ -50,6 +50,7 @@
                         <tr>
                             <td>{{ $cliente->nombre }}</td>
                             <td>{{ $cliente->dni }}</td>
+                            <td>{{ $cliente->telefono ?? 'No hay'}}</td>
                             <td>{{ $cliente->direccion ?? 'No especificada' }}</td>
                             <td>
                                 <!-- Botones de acción -->
