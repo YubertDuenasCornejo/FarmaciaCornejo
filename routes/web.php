@@ -1,5 +1,5 @@
 <?php
-
+use App\Http\Controllers\clienteController;
 use App\Http\Controllers\EquipoMedicoController;
 use App\Http\Controllers\homeController;
 use App\Http\Controllers\loginController;
@@ -39,6 +39,7 @@ Route::resource('equipoMedico', EquipoMedicoController::class);
 Route::resource('proveedores', ProveedoreController::class);
 Route::resource('sucursales', SucursalController::class);
 Route::resource('ventas', VentaController::class);
+Route::resource('clientes',clienteController::class);
 
 
 Route::get('/404', function () {

@@ -14,6 +14,7 @@ class Venta extends Model
     protected $fillable = [
         'user_id',
         'sucursal_id',
+        'cliente_id',
         'total',
     ];
 
@@ -33,5 +34,9 @@ class Venta extends Model
     public function detalleVentas()
     {
         return $this->hasMany(DetalleVenta::class);
+    }
+    public function cliente()
+    {
+        return $this->belongsTo(Cliente::class);
     }
 }
