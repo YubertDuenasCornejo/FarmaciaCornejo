@@ -83,7 +83,6 @@
         <div id="collapseVentas" class="collapse" aria-labelledby="headingVentas" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{{route('ventas.index')}}"><i class="fas fa-plus-circle mr-2"></i>Nueva venta</a>
-                <a class="collapse-item" href=""><i class="fas fa-history mr-2"></i>Historial de ventas</a>
             </div>
         </div>
     </li>
