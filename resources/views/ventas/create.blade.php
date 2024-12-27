@@ -27,10 +27,12 @@
                 @endforeach
             </select>
         </div>
+
+        <!-- Selección del Cliente -->
         <div class="mb-3">
             <label for="cliente_id" class="form-label">Cliente</label>
             <select name="cliente_id" id="cliente_id" class="form-control" required>
-                <option value="">Seleccione un usuario</option>
+                <option value="">Seleccione un cliente</option>
                 @foreach ($clientes as $cliente)
                     <option value="{{ $cliente->id }}">{{ $cliente->nombre }}</option>
                 @endforeach
@@ -48,157 +50,148 @@
             </select>
         </div>
 
-        <!-- Detalle de Productos -->
-        <div id="productos-container" class="mb-3">
-            <h4>Productos</h4>
-            <div class="producto-item">
-                <div class="row">
-                    <div class="col-md-4">
-                        <label for="producto_id_1" class="form-label">Producto</label>
-                        <select name="productos[0][producto_id]" id="producto_id_1" class="form-control" required>
-                            <option value="">Seleccione un producto</option>
-                            @foreach ($medicamentos as $medicamento)
-                                <option value="{{ $medicamento->id }}">
-                                    Medicamento - {{ $medicamento->nombre }}
-                                </option>
-                            @endforeach
-                            @foreach ($equipos as $equipo)
-                                <option value="{{ $equipo->id }}">
-                                    Equipo Médico - {{ $equipo->nombre }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-md-2">
-                        <label for="cantidad_1" class="form-label">Cantidad a vender</label>
-                        <input type="number" name="productos[0][cantidad]" id="cantidad_1" class="form-control" min="1" required>
-                    </div>
-                    <div class="col-md-3">
-                        <label for="precio_unitario_1" class="form-label">Precio Unitario</label>
-                        <input type="number" name="productos[0][precio_unitario]" id="precio_unitario_1" class="form-control" step="0.01" min="0" required>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label">&nbsp;</label>
-                        <button type="button" class="btn btn-danger w-100 remove-producto">Eliminar</button>
-                    </div>
-                </div>
-            </div>
+        <!-- Tabla de Detalle de Productos -->
+        <div class="mb-3">
+            <h4>Detalle de Productos</h4>
+            <table class="table table-bordered" id="detalle-productos">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio Unitario</th>
+                        <th>Subtotal</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Las filas se agregarán dinámicamente aquí -->
+                </tbody>
+            </table>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAgregarProducto">
+                Añadir Producto
+            </button>
         </div>
-        <button type="button" class="btn btn-primary" id="add-producto">Añadir Producto</button>
 
         <!-- Total -->
         <div class="mb-3">
             <label for="total" class="form-label">Total</label>
-            <input type="number" name="total" id="total" class="form-control" step="0.01" min="0" required>
+            <input type="number" name="total" id="total" class="form-control" step="0.01" min="0" readonly>
         </div>
 
         <button type="submit" class="btn btn-success">Guardar Venta</button>
     </form>
 </div>
-<!--modal para agregar produtos-->
-<div class="modal fade" id="createModal-{{ $libro->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Añadir Copia</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="{{ route('copia_libros.store') }}" method="POST">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="codigo" class="form-label">Código:</label>
-                            <!-- Campo de código deshabilitado inicialmente -->
-                            <input type="text" name="codigo" id="codigo" class="form-control" readonly>
-                            @error('codigo')
-                                <small class="text-danger">{{ '*' . $message }}</small>
-                            @enderror
-                        </div>
-                        <div class="mb-3 form-check">
-                            <!-- Checkbox para habilitar el campo de código personalizado -->
-                            <input type="checkbox" class="form-check-input" id="customCode" name="customCode">
-                            <label class="form-check-label" for="customCode">Ingresar código personalizado</label>
-                        </div>
-                        <input type="hidden" name="libro_id" value="{{ $libro->id }}">
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="submit" class="btn btn-primary">Guardar</button>
-                        </div>
-                    </form>
-                </div>
+
+<div class="modal fade" id="modalAgregarProducto" tabindex="-1" aria-labelledby="modalAgregarProductoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalAgregarProductoLabel">Agregar Producto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-        </div>
-
-<script>
-    // Script para añadir y eliminar productos dinámicamente
-    document.getElementById('add-producto').addEventListener('click', () => {
-        const container = document.getElementById('productos-container');
-        const index = container.querySelectorAll('.producto-item').length;
-
-        const newProducto = `
-            <div class="producto-item">
-                <div class="row">
-                    <div class="col-md-4">
-                        <label for="producto_id_${index}" class="form-label">Producto</label>
-                        <select name="productos[${index}][producto_id]" id="producto_id_${index}" class="form-control" required>
+            <div class="modal-body">
+                <form id="form-agregar-producto">
+                    <div class="mb-3">
+                        <label for="producto_id" class="form-label">Producto</label>
+                        <select name="producto_id" id="producto_id" class="form-control" required>
                             <option value="">Seleccione un producto</option>
                             @foreach ($medicamentos as $medicamento)
-                                <option value="{{ $medicamento->id }}">
+                                <option value="{{ $medicamento->id }}" data-stock="{{ $medicamento->stock }}" data-precio="{{ $medicamento->precio }}">
                                     Medicamento - {{ $medicamento->nombre }}
                                 </option>
                             @endforeach
                             @foreach ($equipos as $equipo)
-                                <option value="{{ $equipo->id }}">
+                                <option value="{{ $equipo->id }}" data-stock="{{ $equipo->stock }}" data-precio="{{ $equipo->precio }}">
                                     Equipo Médico - {{ $equipo->nombre }}
                                 </option>
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-md-2">
-                        <label for="cantidad_${index}" class="form-label">Cantidad</label>
-                        <input type="number" name="productos[${index}][cantidad]" id="cantidad_${index}" class="form-control" min="1" required>
+                    <div class="mb-3">
+                        <label for="stock_actual" class="form-label">Stock Actual</label>
+                        <input type="number" id="stock_actual" class="form-control" readonly>
                     </div>
-                    <div class="col-md-3">
-                        <label for="precio_unitario_${index}" class="form-label">Precio Unitario</label>
-                        <input type="number" name="productos[${index}][precio_unitario]" id="precio_unitario_${index}" class="form-control" step="0.01" min="0" required>
+                    <div class="mb-3">
+                        <label for="cantidad" class="form-label">Cantidad</label>
+                        <input type="number" name="cantidad" id="cantidad" class="form-control" min="1" required>
                     </div>
-                    <div class="col-md-3">
-                        <label class="form-label">&nbsp;</label>
-                        <button type="button" class="btn btn-danger w-100 remove-producto">Eliminar</button>
+                    <div class="mb-3">
+                        <label for="precio_unitario" class="form-label">Precio Unitario</label>
+                        <input type="number" name="precio_unitario" id="precio_unitario" class="form-control" step="0.01" min="0" readonly>
                     </div>
-                </div>
+                    <button type="button" class="btn btn-primary" id="btnAgregarProducto">Agregar</button>
+                </form>
             </div>
-        `;
+        </div>
+    </div>
+</div>
 
-        container.insertAdjacentHTML('beforeend', newProducto);
+<script>
+    // Actualizar stock y precio unitario al seleccionar un producto
+    document.getElementById('producto_id').addEventListener('change', function () {
+        const selectedOption = this.options[this.selectedIndex];
+        const stock = selectedOption.getAttribute('data-stock');
+        const precio = selectedOption.getAttribute('data-precio');
+
+        document.getElementById('stock_actual').value = stock || 0;
+        document.getElementById('precio_unitario').value = precio || 0;
     });
 
-    document.getElementById('productos-container').addEventListener('click', (e) => {
-        if (e.target.classList.contains('remove-producto')) {
-            e.target.closest('.producto-item').remove();
+    // Agregar producto a la tabla
+    document.getElementById('btnAgregarProducto').addEventListener('click', () => {
+        const producto = document.getElementById('producto_id');
+        const cantidad = document.getElementById('cantidad').value;
+        const precioUnitario = document.getElementById('precio_unitario').value;
+        const stock = document.getElementById('stock_actual').value;
+
+        if (producto.value && cantidad && precioUnitario) {
+            if (parseInt(cantidad) > parseInt(stock)) {
+                alert('La cantidad no puede ser mayor al stock disponible.');
+                return;
+            }
+
+            const subtotal = (cantidad * precioUnitario).toFixed(2);
+            const tabla = document.getElementById('detalle-productos').querySelector('tbody');
+            const nuevaFila = `
+                <tr>
+                    <td>${producto.options[producto.selectedIndex].text}</td>
+                    <td>${cantidad}</td>
+                    <td>${precioUnitario}</td>
+                    <td>${subtotal}</td>
+                    <td>
+                        <button type="button" class="btn btn-danger btn-sm btnEliminar">Eliminar</button>
+                    </td>
+                </tr>
+            `;
+            tabla.insertAdjacentHTML('beforeend', nuevaFila);
+
+            actualizarTotal();
+
+            // Cerrar modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('modalAgregarProducto'));
+            modal.hide();
+
+            // Resetear formulario
+            document.getElementById('form-agregar-producto').reset();
+            document.getElementById('stock_actual').value = '';
+            document.getElementById('precio_unitario').value = '';
         }
     });
-</script>
-@endsection
-@push('js')
-<script src="{{ asset('js/demo/chart-area-demo.js') }}"></script>
-<script src="{{ asset('js/demo/chart-pie-demo.js') }}"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    document.getElementById('detalle-productos').addEventListener('click', (e) => {
+        if (e.target.classList.contains('btnEliminar')) {
+            e.target.closest('tr').remove();
+            actualizarTotal();
+        }
+    });
 
-<!-- Page level plugins -->
-<script src="{{ asset('vendor/datatables/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
-
-<!-- Page level custom scripts -->
-<script src="{{ asset('js/demo/datatables-demo.js') }}"></script>
-<script>
-        // Mostrar el Toast automáticamente al cargar la página
-        document.addEventListener('DOMContentLoaded', function () {
-            const toastElList = [].slice.call(document.querySelectorAll('.toast'));
-            toastElList.map(function (toastEl) {
-                return new bootstrap.Toast(toastEl).show();
-            });
+    function actualizarTotal() {
+        let total = 0;
+        document.querySelectorAll('#detalle-productos tbody tr').forEach(row => {
+            total += parseFloat(row.children[3].textContent);
         });
-    </script>
-@endpush
+        document.getElementById('total').value = total.toFixed(2);
+    }
+</script>
+
+@endsection
