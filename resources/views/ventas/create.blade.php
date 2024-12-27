@@ -56,7 +56,7 @@
             <table class="table table-bordered" id="detalle-productos">
                 <thead>
                     <tr>
-                        <th>Producto</th>
+                        <th>Nombre del Producto</th>
                         <th>Cantidad</th>
                         <th>Precio Unitario</th>
                         <th>Subtotal</th>
@@ -99,12 +99,18 @@
                         <select name="producto_id" id="producto_id" class="form-control" required>
                             <option value="">Seleccione un producto</option>
                             @foreach ($medicamentos as $medicamento)
-                                <option value="M{{ $medicamento->id }}" data-stock="{{ $medicamento->stock }}" data-precio="{{ $medicamento->precio }}">
+                                <option value="M{{ $medicamento->id }}" 
+                                        data-nombre="Medicamento - {{ $medicamento->nombre }}" 
+                                        data-stock="{{ $medicamento->stock }}" 
+                                        data-precio="{{ $medicamento->precio }}">
                                     Medicamento - {{ $medicamento->nombre }}
                                 </option>
                             @endforeach
                             @foreach ($equipos as $equipo)
-                                <option value="E{{ $equipo->id }}" data-stock="{{ $equipo->stock }}" data-precio="{{ $equipo->precio }}">
+                                <option value="E{{ $equipo->id }}" 
+                                        data-nombre="Equipo Médico - {{ $equipo->nombre }}" 
+                                        data-stock="{{ $equipo->stock }}" 
+                                        data-precio="{{ $equipo->precio }}">
                                     Equipo Médico - {{ $equipo->nombre }}
                                 </option>
                             @endforeach
@@ -130,11 +136,12 @@
 </div>
 
 <script>
-    // Actualizar stock y precio unitario al seleccionar un producto
+    // Actualizar stock, precio unitario y nombre al seleccionar un producto
     document.getElementById('producto_id').addEventListener('change', function () {
         const selectedOption = this.options[this.selectedIndex];
         const stock = selectedOption.getAttribute('data-stock');
         const precio = selectedOption.getAttribute('data-precio');
+        const nombre = selectedOption.getAttribute('data-nombre');
 
         document.getElementById('stock_actual').value = stock || 0;
         document.getElementById('precio_unitario').value = precio || 0;
@@ -146,6 +153,7 @@
         const cantidad = document.getElementById('cantidad').value;
         const precioUnitario = document.getElementById('precio_unitario').value;
         const stock = document.getElementById('stock_actual').value;
+        const nombre = producto.options[producto.selectedIndex].getAttribute('data-nombre');
 
         if (producto.value && cantidad && precioUnitario) {
             if (parseInt(cantidad) > parseInt(stock)) {
@@ -157,12 +165,13 @@
             const tabla = document.getElementById('detalle-productos').querySelector('tbody');
             const nuevaFila = `
                 <tr>
-                    <td>${producto.options[producto.selectedIndex].value}</td>
+                    <td>${nombre}</td>
                     <td>${cantidad}</td>
                     <td>${precioUnitario}</td>
                     <td>${subtotal}</td>
                     <td>
                         <button type="button" class="btn btn-danger btn-sm btnEliminar">Eliminar</button>
+                        <input type="hidden" name="producto_id[]" value="${producto.value}">
                     </td>
                 </tr>
             `;
@@ -196,7 +205,7 @@
         const productos = [];
         document.querySelectorAll('#detalle-productos tbody tr').forEach(row => {
             const producto = {
-                producto_id: row.children[0].textContent.trim(),
+                producto_id: row.querySelector('input[name="producto_id[]"]').value,
                 cantidad: row.children[1].textContent.trim(),
                 precio_unitario: row.children[2].textContent.trim(),
             };
@@ -215,5 +224,4 @@
         document.getElementById('total').value = total.toFixed(2);
     }
 </script>
-
 @endsection
