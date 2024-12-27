@@ -41,7 +41,6 @@
                     <td>{{ $venta->created_at->format('d/m/Y H:i') }}</td>
                     <td>
                         <a href="{{ route('ventas.show', $venta->id) }}" class="btn btn-info btn-sm">Ver</a>
-                        <a href="{{ route('ventas.edit', $venta->id) }}" class="btn btn-warning btn-sm">Editar</a>
                         <form action="{{ route('ventas.destroy', $venta->id) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
