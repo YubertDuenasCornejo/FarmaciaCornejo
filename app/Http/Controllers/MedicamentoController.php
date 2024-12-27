@@ -6,9 +6,13 @@ use App\Models\Medicamento;
 use App\Models\Proveedore;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
-
+use Illuminate\Routing\Controller;
 class MedicamentoController extends Controller
 {
+    public function __construct()
+    {   
+        $this->middleware('can:gestionar-productos')->only('index','create','store','edit','update','destroy','show'); 
+    }
     public function index()
     {
         $medicamentos = Medicamento::all();

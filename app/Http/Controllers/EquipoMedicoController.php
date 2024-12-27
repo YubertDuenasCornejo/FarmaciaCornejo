@@ -5,10 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\EquipoMedico;
 use App\Models\Proveedore;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
+use Illuminate\Routing\Controller;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class EquipoMedicoController extends Controller
 {
+    public function __construct()
+    {   
+        $this->middleware('can:gestionar-productos')->only('index','create','store','edit','update','destroy','show'); 
+    }
     public function index()
     {
         $equiposMedicos = EquipoMedico::all();

@@ -30,6 +30,9 @@ class permissionSeeder extends Seeder
             'ver-detalles-ventas',
             'eliminar-ventas',
 
+            //proveedores
+            'gestionar-proveedores',
+
             //clientes
             'ver-clientes',
             'crear-clientes',

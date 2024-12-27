@@ -26,6 +26,7 @@
     <div class="sidebar-heading">Gestión</div>
 
     <!-- Productos -->
+    @can('gestionar-productos')
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProductos" aria-expanded="true" aria-controls="collapseProductos">
             <i class="fas fa-list"></i>
@@ -33,14 +34,21 @@
         </a>
         <div id="collapseProductos" class="collapse" aria-labelledby="headingProductos" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
+                @can('gestionar-medicamentos')
                 <a class="collapse-item" href="{{ route('medicamentos.index') }}"><i class="fas fa-pills mr-2"></i>Medicamentos</a>
+                @endcan
+                @can('gestionar-equipos')
                 <a class="collapse-item" href="{{ route('equipoMedico.index') }}"><i class="fas fa-stethoscope mr-2"></i>Equipos médicos</a>
+                @endcan
+                @can('gestionar-proveedores')
                 <a class="collapse-item" href="{{ route('proveedores.index') }}"><i class="fas fa-truck mr-2"></i>Proveedores</a>
+                @endcan
             </div>
         </div>
     </li>
-
+    @endcan
     <!-- Usuarios y Roles -->
+    
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUsuariosRoles" aria-expanded="true" aria-controls="collapseUsuariosRoles">
             <i class="fas fa-users-cog"></i>
@@ -48,13 +56,18 @@
         </a>
         <div id="collapseUsuariosRoles" class="collapse" aria-labelledby="headingUsuariosRoles" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
+                @can('ver-usuario')
                 <a class="collapse-item" href="{{ route('users.index') }}"><i class="fas fa-users mr-2"></i>Gestionar Usuarios</a>
+                @endcan
+                @can('ver-roles')
                 <a class="collapse-item" href="{{ route('roles.index') }}"><i class="fas fa-user-shield mr-2"></i>Roles y Permisos</a>
+                @endcan
             </div>
         </div>
     </li>
-
+    
     <!-- Sucursales -->
+    @can('administrar-sucursales')
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSucursales" aria-expanded="true" aria-controls="collapseSucursales">
             <i class="fas fa-building"></i>
@@ -67,10 +80,10 @@
             </div>
         </div>
     </li>
-
+    @endcan
     <!-- Divider -->
     <hr class="sidebar-divider">
-
+    @can('gestionar-ventas')
     <!-- Ventas Section -->
     <div class="sidebar-heading">Ventas</div>
 
@@ -86,9 +99,11 @@
             </div>
         </div>
     </li>
+    @endcan
     <!-- Divider -->
     <hr class="sidebar-divider">
 
+    @can('ver-clientes')
     <!-- Ventas Section -->
     <div class="sidebar-heading">Clientes</div>
     <li class="nav-item">
@@ -105,7 +120,7 @@
     </li>
     <!-- Divider -->
     <hr class="sidebar-divider">
-
+    @endcan
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
 

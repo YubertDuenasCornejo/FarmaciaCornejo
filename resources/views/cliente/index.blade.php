@@ -20,6 +20,7 @@
         </div>
     </div>
 @endif
+    @can('crear-clientes')
     <!-- Título de la Página -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">GESTIÓN DE CLIENTES</h1>
@@ -27,7 +28,7 @@
             <i class="fas fa-plus"></i> Nuevo Cliente
         </a>
     </div>
-
+    @endcan
     <!-- Tabla de Proveedores -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
@@ -54,9 +55,12 @@
                             <td>{{ $cliente->direccion ?? 'No especificada' }}</td>
                             <td>
                                 <!-- Botones de acción -->
+                                @can('editar-clientes')
                                 <a href="{{ route('clientes.edit', $cliente->id) }}" class="btn btn-warning btn-sm">
                                     <i class="fas fa-edit"></i> Editar
                                 </a>
+                                @endcan
+                                @can('eliminar-clientes')
                                 <form action="{{ route('clientes.destroy', $cliente->id) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Estás seguro de eliminar este proveedor?')">
                                     @csrf
                                     @method('DELETE')
@@ -64,6 +68,7 @@
                                         <i class="fas fa-trash"></i> Eliminar
                                     </button>
                                 </form>
+                                @endcan
                             </td>
                         </tr>
                         @endforeach

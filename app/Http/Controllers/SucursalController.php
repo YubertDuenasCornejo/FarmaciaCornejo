@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Sucursal;
 use Illuminate\Http\Request;
-
+use Illuminate\Routing\Controller;
 class SucursalController extends Controller
 {
+    public function __construct()
+    {   
+        $this->middleware('can:administrar-sucursales')->only('index','create','store','edit','update','destroy','show'); 
+    }
     public function index()
     {
         $sucursales = Sucursal::all();

@@ -11,9 +11,16 @@ use App\Models\EquipoMedico;
 use App\Models\DetalleVenta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Routing\Controller;
 
 class VentaController extends Controller
 {
+    public function __construct()
+    {   
+        $this->middleware('can:gestionar-ventas')->only('index','create','store');
+        $this->middleware('can:ver-detalles-ventas')->only('show');
+        $this->middleware('can:eliminar-ventas')->only('destroy');  
+    }
     /**
      * Mostrar una lista de ventas.
      */

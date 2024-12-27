@@ -5,8 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Proveedore;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Routing\Controller;
 class ProveedoreController extends Controller
 {
+    public function __construct()
+    {   
+        $this->middleware('can:gestionar-proveedores')->only('index','create','store','edit','update','destroy','show'); 
+    }
     public function index()
     {
         $proveedores = Proveedore::all();

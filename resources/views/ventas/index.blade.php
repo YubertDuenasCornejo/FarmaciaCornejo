@@ -40,12 +40,16 @@
                     <td>${{ number_format($venta->total, 2) }}</td>
                     <td>{{ $venta->created_at->format('d/m/Y H:i') }}</td>
                     <td>
+                        @can('ver-detalles-ventas')
                         <a href="{{ route('ventas.show', $venta->id) }}" class="btn btn-info btn-sm">Ver</a>
+                        @endcan
+                        @can('eliminar-ventas')
                         <form action="{{ route('ventas.destroy', $venta->id) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
                         </form>
+                        @endcan
                     </td>
                 </tr>
             @empty

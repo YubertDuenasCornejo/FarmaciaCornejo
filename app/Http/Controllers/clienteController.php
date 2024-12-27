@@ -10,9 +10,17 @@ use Exception;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Routing\Controller;
 
 class clienteController extends Controller
 {
+    public function __construct()
+    {   
+        $this->middleware('can:ver-clientes')->only('index');
+        $this->middleware('can:crear-clientes')->only('create', 'store');
+        $this->middleware('can:editar-clientes')->only('edit', 'update');
+        $this->middleware('can:eliminar-clientes')->only('destroy');  
+    }
     /**
      * Display a listing of the resource.
      */

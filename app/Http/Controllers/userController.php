@@ -18,10 +18,10 @@ class userController extends Controller
 {
     public function __construct()
     {   
-        /*$this->middleware('can:ver-usuario')->only('index');
+        $this->middleware('can:ver-usuario')->only('index');
         $this->middleware('can:crear-usuario')->only('create', 'store');
         $this->middleware('can:editar-usuario')->only('edit', 'update');
-        $this->middleware('can:eliminar-usuario')->only('destroy');*/   
+        $this->middleware('can:eliminar-usuario')->only('destroy');  
     }
     /* public function search(Request $request)
      {
