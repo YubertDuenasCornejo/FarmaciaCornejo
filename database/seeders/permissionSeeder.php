@@ -20,6 +20,24 @@ class permissionSeeder extends Seeder
             'editar-usuario',
             'eliminar-usuario',
 
+            //productos
+            'gestionar-productos',
+            'gestionar-medicamentos',
+            'gestionar-equipos',
+
+            //ventas
+            'gestionar-ventas',
+            'ver-detalles-ventas',
+            'eliminar-ventas',
+
+            //clientes
+            'ver-clientes',
+            'crear-clientes',
+            'editar-clientes',
+            'eliminar-clientes',
+
+            //sucursales
+            'administrar-sucursales',
 
             //roles
             'ver-roles',
