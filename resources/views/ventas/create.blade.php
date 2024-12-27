@@ -72,6 +72,9 @@
             </button>
         </div>
 
+        <!-- Campo oculto para enviar productos -->
+        <input type="hidden" name="productos" id="productos">
+
         <!-- Total -->
         <div class="mb-3">
             <label for="total" class="form-label">Total</label>
@@ -96,12 +99,12 @@
                         <select name="producto_id" id="producto_id" class="form-control" required>
                             <option value="">Seleccione un producto</option>
                             @foreach ($medicamentos as $medicamento)
-                                <option value="{{ $medicamento->id }}" data-stock="{{ $medicamento->stock }}" data-precio="{{ $medicamento->precio }}">
+                                <option value="M{{ $medicamento->id }}" data-stock="{{ $medicamento->stock }}" data-precio="{{ $medicamento->precio }}">
                                     Medicamento - {{ $medicamento->nombre }}
                                 </option>
                             @endforeach
                             @foreach ($equipos as $equipo)
-                                <option value="{{ $equipo->id }}" data-stock="{{ $equipo->stock }}" data-precio="{{ $equipo->precio }}">
+                                <option value="E{{ $equipo->id }}" data-stock="{{ $equipo->stock }}" data-precio="{{ $equipo->precio }}">
                                     Equipo Médico - {{ $equipo->nombre }}
                                 </option>
                             @endforeach
@@ -154,7 +157,7 @@
             const tabla = document.getElementById('detalle-productos').querySelector('tbody');
             const nuevaFila = `
                 <tr>
-                    <td>${producto.options[producto.selectedIndex].text}</td>
+                    <td>${producto.options[producto.selectedIndex].value}</td>
                     <td>${cantidad}</td>
                     <td>${precioUnitario}</td>
                     <td>${subtotal}</td>
@@ -165,6 +168,7 @@
             `;
             tabla.insertAdjacentHTML('beforeend', nuevaFila);
 
+            actualizarProductos();
             actualizarTotal();
 
             // Cerrar modal
@@ -178,13 +182,31 @@
         }
     });
 
+    // Eliminar producto
     document.getElementById('detalle-productos').addEventListener('click', (e) => {
         if (e.target.classList.contains('btnEliminar')) {
             e.target.closest('tr').remove();
+            actualizarProductos();
             actualizarTotal();
         }
     });
 
+    // Actualizar el campo oculto de productos
+    function actualizarProductos() {
+        const productos = [];
+        document.querySelectorAll('#detalle-productos tbody tr').forEach(row => {
+            const producto = {
+                producto_id: row.children[0].textContent.trim(),
+                cantidad: row.children[1].textContent.trim(),
+                precio_unitario: row.children[2].textContent.trim(),
+            };
+            productos.push(producto);
+        });
+
+        document.getElementById('productos').value = JSON.stringify(productos);
+    }
+
+    // Actualizar total
     function actualizarTotal() {
         let total = 0;
         document.querySelectorAll('#detalle-productos tbody tr').forEach(row => {

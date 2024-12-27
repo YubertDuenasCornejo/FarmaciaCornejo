@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Cliente;
 use App\Models\Medicamento;
 use App\Models\EquipoMedico;
+use App\Models\DetalleVenta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -43,55 +44,65 @@ class VentaController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        // Decodificar el JSON de productos y agregarlo al request para validación
+        $productos = json_decode($request->productos, true);
+        $request->merge(['productos' => $productos]);
+
+        // Validación de los datos
+        $validatedData = $request->validate([
             'user_id' => 'required|exists:users,id',
             'cliente_id' => 'required|exists:clientes,id',
             'sucursal_id' => 'required|exists:sucursals,id',
             'total' => 'required|numeric|min:0',
             'productos' => 'required|array|min:1',
-            'productos.*.producto_id' => 'required|integer',
+            'productos.*.producto_id' => 'required|string',
             'productos.*.cantidad' => 'required|integer|min:1',
             'productos.*.precio_unitario' => 'required|numeric|min:0',
         ]);
 
-        DB::transaction(function () use ($request) {
-            // Crear la venta
-            $venta = Venta::create([
-                'user_id' => $request->user_id,
-                'cliente_id' => $request->cliente_id,
-                'sucursal_id' => $request->sucursal_id,
-                'total' => $request->total,
-            ]);
+        // Crear la venta
+        $venta = Venta::create([
+            'user_id' => $validatedData['user_id'],
+            'cliente_id' => $validatedData['cliente_id'],
+            'sucursal_id' => $validatedData['sucursal_id'],
+            'total' => $validatedData['total'],
+        ]);
 
-            // Guardar detalle de la venta y actualizar el stock
-            foreach ($request->productos as $producto) {
-                $modelo = null;
+        // Crear los detalles de la venta
+        foreach ($validatedData['productos'] as $producto) {
+            // Determinar tipo de producto según el prefijo del ID
+            $tipoProducto = null;
+            $modelo = null;
 
-                // Determinar el modelo según el tipo de producto
-                if (str_starts_with($producto['producto_id'], 'M')) {
-                    $modelo = Medicamento::findOrFail(substr($producto['producto_id'], 1));
-                } elseif (str_starts_with($producto['producto_id'], 'E')) {
-                    $modelo = EquipoMedico::findOrFail(substr($producto['producto_id'], 1));
-                }
-
-                // Verificar si hay suficiente stock
-                if ($modelo && $modelo->stock >= $producto['cantidad']) {
-                    // Reducir el stock
-                    $modelo->decrement('stock', $producto['cantidad']);
-
-                    // Crear el detalle de venta
-                    $venta->detalleVentas()->create([
-                        'producto_id' => $producto['producto_id'],
-                        'cantidad' => $producto['cantidad'],
-                        'precio_unitario' => $producto['precio_unitario'],
-                        'subtotal' => $producto['cantidad'] * $producto['precio_unitario'],
-                    ]);
-                } else {
-                    throw new \Exception("Stock insuficiente para el producto: {$modelo->nombre}");
-                }
+            if (str_starts_with($producto['producto_id'], 'M')) {
+                $tipoProducto = 'medicamento';
+                $idProducto = substr($producto['producto_id'], 1);
+                $modelo = Medicamento::findOrFail($idProducto);
+            } elseif (str_starts_with($producto['producto_id'], 'E')) {
+                $tipoProducto = 'equipo_medico';
+                $idProducto = substr($producto['producto_id'], 1);
+                $modelo = EquipoMedico::findOrFail($idProducto);
             }
-        });
 
+            // Validar stock y actualizar
+            if ($modelo && $modelo->stock >= $producto['cantidad']) {
+                $modelo->decrement('stock', $producto['cantidad']);
+
+                // Crear el detalle de venta
+                DetalleVenta::create([
+                    'venta_id' => $venta->id,
+                    'producto_id' => $idProducto,
+                    'tipo_producto' => $tipoProducto,
+                    'cantidad' => $producto['cantidad'],
+                    'precio_unitario' => $producto['precio_unitario'],
+                    'subtotal' => $producto['cantidad'] * $producto['precio_unitario'],
+                ]);
+            } else {
+                throw new \Exception("Stock insuficiente para el producto seleccionado.");
+            }
+        }
+
+        // Redirección con mensaje de éxito
         return redirect()->route('ventas.index')->with('success', 'Venta creada exitosamente.');
     }
 }
