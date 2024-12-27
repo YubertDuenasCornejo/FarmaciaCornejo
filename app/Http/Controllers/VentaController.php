@@ -105,4 +105,20 @@ class VentaController extends Controller
         // Redirección con mensaje de éxito
         return redirect()->route('ventas.index')->with('success', 'Venta creada exitosamente.');
     }
+
+    public function destroy(Venta $venta)
+    {
+        $venta->delete();
+        return redirect()->route('ventas.index')->with('success', 'Venta eliminada con éxito');
+    }
+
+    public function show($id)
+{
+    // Buscar la venta con sus relaciones cargadas
+    $venta = Venta::with(['detalleVentas', 'user', 'cliente', 'sucursal'])->findOrFail($id);
+
+    // Pasar los datos a la vista
+    return view('ventas.show', compact('venta'));
+}
+
 }
