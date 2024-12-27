@@ -48,7 +48,7 @@
     </li>
     @endcan
     <!-- Usuarios y Roles -->
-    
+    @can('usuarios-roles')
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUsuariosRoles" aria-expanded="true" aria-controls="collapseUsuariosRoles">
             <i class="fas fa-users-cog"></i>
@@ -65,7 +65,7 @@
             </div>
         </div>
     </li>
-    
+    @endcan
     <!-- Sucursales -->
     @can('administrar-sucursales')
     <li class="nav-item">
