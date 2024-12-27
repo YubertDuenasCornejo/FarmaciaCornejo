@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Medicamento;
 use App\Models\Proveedore;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class MedicamentoController extends Controller
 {
@@ -68,6 +69,12 @@ class MedicamentoController extends Controller
     {
         $medicamento->delete();
         return redirect()->route('medicamentos.index')->with('success', 'Medicamento eliminado con éxito');
+    }
+        public function generarReporte()
+    {
+        $medicamentos = Medicamento::all();
+        $pdf = Pdf::loadView('medicamentos.reporte', compact('medicamentos'));
+        return $pdf->download('reporte_medicamentos.pdf');
     }
 }
 

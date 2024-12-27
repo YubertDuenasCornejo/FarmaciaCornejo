@@ -34,7 +34,7 @@
         </a>
         
         <!-- Botón para generar reporte (derecha) -->
-        <a href="" class="btn btn-sm btn-primary">
+        <a href="{{ route('medicamentos.reporte') }}" class="btn btn-sm btn-primary">
              <i class="fas fa-download fa-sm text-white-50"></i> Generar Reporte
         </a>
 

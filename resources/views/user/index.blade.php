@@ -41,8 +41,7 @@
                         @foreach ($users as $user)
                         <tr>
                             <td>{{$user->name}}</td>
-                            
-                            <td></td>
+                            <td>{{$user->getRoleNames()->first()}}</td>
                             <td>
                                 <div class="d-grid gap-2 d-md-block">
                                     

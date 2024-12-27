@@ -30,7 +30,7 @@
             <i class="fas fa-plus fa-sm text-white-50"></i> Añadir Nuevo Equipo Médico
         </a>
 
-        <a href="#" class="btn btn-sm btn-primary">
+        <a href="{{ route('equipoMedico.reporte')}}" class="btn btn-sm btn-primary">
             <i class="fas fa-download fa-sm text-white-50"></i> Generar Reporte
         </a>
     </div>

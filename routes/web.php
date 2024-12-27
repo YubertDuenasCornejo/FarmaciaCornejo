@@ -11,6 +11,7 @@ use App\Http\Controllers\userController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\VentaController;
 use App\Http\Controllers\roleController;
+use App\Http\Controllers\ReporteController;
 use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('auth.login');
@@ -30,6 +31,23 @@ Route::get('/medicamento', function () {
 Route::view('/medicamento', 'medicamento.index')->name('medicamento');
 
 
+
+
+
+
+
+Route::get('/medicamentos/reporte', [MedicamentoController::class, 'generarReporte'])->name('medicamentos.reporte');
+Route::get('/equipo-medico/reporte', [EquipoMedicoController::class, 'generarReporte'])->name('equipoMedico.reporte');
+Route::get('/proveedores/reporte', [ProveedoreController::class, 'generarReporte'])->name('proveedores.reporte');
+
+
+
+
+
+
+
+
+
 Route::view('/equipoMedico', 'equipoMedico.index')->name('equipoMedico');
 
 Route::resource('users',userController::class);
@@ -41,6 +59,7 @@ Route::resource('sucursales', SucursalController::class);
 Route::resource('ventas', VentaController::class);
 Route::resource('clientes',clienteController::class);
 
+//Route::resource('reporte', ReporteController::class);
 
 Route::get('/404', function () {
     return view('page.404'); 

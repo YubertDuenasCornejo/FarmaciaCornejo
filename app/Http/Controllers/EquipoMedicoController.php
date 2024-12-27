@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\EquipoMedico;
 use App\Models\Proveedore;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class EquipoMedicoController extends Controller
 {
@@ -70,4 +71,11 @@ class EquipoMedicoController extends Controller
         $equipoMedico->delete();
         return redirect()->route('equipoMedico.index')->with('success', 'Equipo médico eliminado con éxito');
     }
+        public function generarReporte()
+    {
+        $equiposMedicos = EquipoMedico::all();
+        $pdf = Pdf::loadView('equipoMedico.reporte', compact('equiposMedicos'));
+        return $pdf->download('reporte_equipos_medicos.pdf');
+    }
+
 }

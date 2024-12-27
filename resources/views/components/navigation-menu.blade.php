@@ -107,24 +107,6 @@
     <!-- Divider -->
     <hr class="sidebar-divider">
 
-    <!-- Reportes Section -->
-    <div class="sidebar-heading">Reportes</div>
-
-    <!-- Reportes -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReportes" aria-expanded="true" aria-controls="collapseReportes">
-            <i class="fas fa-chart-pie"></i>
-            <span>Reportes</span>
-        </a>
-        <div id="collapseReportes" class="collapse" aria-labelledby="headingReportes" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href=""><i class="fas fa-chart-line mr-2"></i>Reportes de ventas</a>
-            <a class="collapse-item" href=""><i class="fas fa-warehouse mr-2"></i>Inventario por sucursal</a>
-
-            </div>
-        </div>
-    </li>
-
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
 

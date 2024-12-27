@@ -23,8 +23,14 @@
     <!-- Título de la Página -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">GESTIÓN DE PROVEEDORES</h1>
-        <a href="{{ route('proveedores.create') }}" class="btn btn-primary">
-            <i class="fas fa-plus"></i> Nuevo Proveedor
+ </div>   
+        <div class="d-flex justify-content-between mb-4">
+        <a href="{{ route('proveedores.create') }}" class="btn btn-sm btn-success">
+            <i class="fas fa-plus fa-sm text-white-50"></i> Añadir Nuevo Proveedor
+        </a>
+        
+        <a href="{{ route('proveedores.reporte') }}" class="btn btn-sm btn-primary">
+            <i class="fas fa-download fa-sm text-white-50"></i> Generar Reporte
         </a>
     </div>
 

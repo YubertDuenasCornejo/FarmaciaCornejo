@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Proveedore;
 use Illuminate\Http\Request;
-
+use Barryvdh\DomPDF\Facade\Pdf;
 class ProveedoreController extends Controller
 {
     public function index()
@@ -60,5 +60,11 @@ class ProveedoreController extends Controller
     {
         $proveedore->delete();
         return redirect()->route('proveedores.index')->with('success', 'Proveedor eliminado con éxito');
+    }
+        public function generarReporte()
+    {
+        $proveedores = Proveedore::with(['medicamentos', 'equiposMedicos'])->get();
+        $pdf = Pdf::loadView('proveedores.reporte', compact('proveedores'));
+        return $pdf->download('reporte_proveedores_productos.pdf');
     }
 }
