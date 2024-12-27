@@ -15,6 +15,15 @@ class DetalleVenta extends Model
         return $this->belongsTo(Venta::class);
     }
 
+    protected $fillable = [
+        'venta_id',
+        'producto_id',
+        'tipo_producto',
+        'cantidad',
+        'precio_unitario',
+        'subtotal'
+    ];
+
     public function producto()
     {
         if ($this->tipo_producto === 'medicamento') {
